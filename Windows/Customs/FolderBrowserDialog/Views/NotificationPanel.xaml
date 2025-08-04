@@ -1,16 +1,17 @@
 <UserControl x:Class="MyApp.Views.NotificationPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-    <ItemsControl ItemsSource="{Binding Messages}">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Border BorderThickness="1" Padding="5" Margin="2"
-                        Background="{Binding Priority, Converter={StaticResource PriorityToBrushConverter}}">
-                    <StackPanel>
-                        <TextBlock Text="{Binding DisplayMessage}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding Timestamp}" FontSize="10" Foreground="Gray"/>
-                    </StackPanel>
-                </Border>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+    <Border BorderBrush="Gray" BorderThickness="1" Padding="5">
+        <ScrollViewer Height="150">
+            <ItemsControl ItemsSource="{Binding Messages}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding DisplayMessage}" 
+                                   Foreground="{Binding Priority, Converter={StaticResource PriorityToBrushConverter}}"
+                                   Cursor="Hand"
+                                   MouseDown="TextBlock_MouseDown"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Border>
 </UserControl>
