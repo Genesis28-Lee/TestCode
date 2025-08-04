@@ -1,0 +1,19 @@
+<Window x:Class="MyApp.Views.ToastPopupView"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Width="300" Height="80"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual"
+        Loaded="Window_Loaded"
+        MouseDown="Window_MouseDown">
+    <Border Background="White" CornerRadius="8" Padding="10" 
+            BorderBrush="Gray" BorderThickness="1" Opacity="0.95">
+        <StackPanel>
+            <TextBlock Text="{Binding DisplayMessage}" FontWeight="Bold" />
+            <TextBlock Text="{Binding Timestamp}" FontSize="10" Foreground="Gray"/>
+        </StackPanel>
+    </Border>
+</Window>
