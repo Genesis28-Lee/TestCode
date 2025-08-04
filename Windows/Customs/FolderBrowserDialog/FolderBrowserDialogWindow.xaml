@@ -1,0 +1,9 @@
+<Window x:Class="MyApp.Dialogs.FolderBrowserDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        Title="폴더 선택"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        WindowStyle="ToolWindow">
+    <Views:FolderBrowserDialog/>
+</Window>
