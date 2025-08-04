@@ -1,0 +1,22 @@
+<UserControl x:Class="MyApp.Controls.CustomFolderBrowserDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MyApp.Controls"
+             Width="600" Height="400">
+    <Border Background="{DynamicResource MaterialBackground}" 
+            CornerRadius="8"
+            Padding="20"
+            BorderBrush="#CCC" BorderThickness="1"
+            SnapsToDevicePixels="True">
+        <DockPanel>
+            <TextBlock Text="폴더 선택" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+            <TreeView x:Name="FolderTree" Margin="0,10,0,10">
+                <!-- TreeView will be populated in code-behind -->
+            </TreeView>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <Button Content="취소" Width="80" Margin="5" Click="Cancel_Click"/>
+                <Button Content="선택" Width="80" Margin="5" Click="Select_Click"/>
+            </StackPanel>
+        </DockPanel>
+    </Border>
+</UserControl>
