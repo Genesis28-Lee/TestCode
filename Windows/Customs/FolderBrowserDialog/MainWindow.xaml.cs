@@ -23,5 +23,20 @@ namespace MyApp
 
             MainGrid.Children.Add(dialog);
         }
+
+
+        private void OpenFolderDialog()
+        {
+            var dialog = new FolderBrowserDialogWindow
+            {
+                Owner = this
+            };
+        
+            if (dialog.ShowDialog() == true)
+            {
+                var selected = dialog.SelectedPaths;
+                MessageBox.Show($"선택된 폴더: {string.Join("\n", selected)}");
+            }
+        }
     }
 }
