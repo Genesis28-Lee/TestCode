@@ -1,10 +1,13 @@
-public class PriorityToBrushConverter : IValueConverter
+public class TypeToBrushConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         return value switch
         {
-            NotificationPriority.High => Brushes.IndianRed,
+            NotificationType.Info => Brushes.LightBlue,
+            NotificationType.Success => Brushes.LightGreen,
+            NotificationType.Warning => Brushes.Gold,
+            NotificationType.Error => Brushes.IndianRed,
             _ => Brushes.LightGray
         };
     }
