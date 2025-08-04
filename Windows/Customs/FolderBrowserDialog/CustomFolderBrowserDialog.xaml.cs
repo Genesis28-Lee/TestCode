@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +8,8 @@ namespace MyApp.Controls
     public partial class CustomFolderBrowserDialog : UserControl
     {
         public string? SelectedPath { get; private set; }
+
+        public event EventHandler? FolderSelected;
 
         public CustomFolderBrowserDialog()
         {
@@ -18,50 +21,45 @@ namespace MyApp.Controls
         {
             foreach (var drive in DriveInfo.GetDrives())
             {
-                var item = CreateDirectoryNode(drive.RootDirectory);
-                FolderTree.Items.Add(item);
+                var rootItem = CreateDirectoryNode(drive.RootDirectory);
+                FolderTree.Items.Add(rootItem);
             }
         }
 
-        private TreeViewItem CreateDirectoryNode(DirectoryInfo directory)
+        private TreeViewItem CreateDirectoryNode(DirectoryInfo dir)
         {
             var item = new TreeViewItem
             {
-                Header = directory.FullName,
-                Tag = directory,
-                IsExpanded = false
+                Header = dir.FullName,
+                Tag = dir
             };
+
             try
             {
-                foreach (var subDir in directory.GetDirectories())
+                foreach (var sub in dir.GetDirectories())
                 {
-                    item.Items.Add(CreateDirectoryNode(subDir));
+                    item.Items.Add(CreateDirectoryNode(sub));
                 }
             }
-            catch { /* 권한 오류 무시 */ }
+            catch { }
 
             return item;
         }
 
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            if (FolderTree.SelectedItem is TreeViewItem selected)
+            if (FolderTree.SelectedItem is TreeViewItem item)
             {
-                SelectedPath = (selected.Tag as DirectoryInfo)?.FullName;
-                RaiseFolderSelected();
+                if (item.Tag is DirectoryInfo dir)
+                    SelectedPath = dir.FullName;
             }
+
+            FolderSelected?.Invoke(this, EventArgs.Empty);
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             SelectedPath = null;
-            RaiseFolderSelected();
-        }
-
-        public event EventHandler? FolderSelected;
-
-        private void RaiseFolderSelected()
-        {
             FolderSelected?.Invoke(this, EventArgs.Empty);
         }
     }
