@@ -3,6 +3,8 @@ public class FolderBrowserDialogViewModel : INotifyPropertyChanged
     public ObservableCollection<FolderItemModel> Folders { get; set; } = new();
     public ObservableCollection<FolderItemModel> RecentFolders { get; set; } = new();
 
+    public NotificationService Notifier { get; }
+
     public bool ShowNotification { get; set; } = true;
 
     public List<string> SelectedFolders =>
@@ -17,8 +19,9 @@ public class FolderBrowserDialogViewModel : INotifyPropertyChanged
     public event Action? RequestCloseWithOK;
     public event Action? RequestCloseWithCancel;
 
-    public FolderBrowserDialogViewModel()
+    public FolderBrowserDialogViewModel(NotificationService notifier)
     {
+        Notifier = notifier;
         LoadFolders();
         LoadRecent();
         SelectCommand = new RelayCommand(ExecuteSelect);
@@ -34,10 +37,10 @@ public class FolderBrowserDialogViewModel : INotifyPropertyChanged
             {
                 foreach (var path in SelectedFolders)
                 {
-                    NotificationHelper.ShowFolderSelectedToast(path);
+                    Notifier.Notify($"선택된 폴더: {path}", NotificationPriority.Normal);
                 }
             }
-
+    
             RequestCloseWithOK?.Invoke();
         }
     }
