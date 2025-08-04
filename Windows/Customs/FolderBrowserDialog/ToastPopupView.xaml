@@ -1,7 +1,7 @@
 <Window x:Class="MyApp.Views.ToastPopupView"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="Transparent"
+        Background="{Binding Type, Converter={StaticResource TypeToBrushConverter}}"
         Width="300" Height="80"
         ShowInTaskbar="False"
         Topmost="True"
