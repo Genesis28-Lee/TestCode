@@ -15,5 +15,10 @@
             <TextBlock Text="{Binding DisplayMessage}" FontWeight="Bold" />
             <TextBlock Text="{Binding Timestamp}" FontSize="10" Foreground="Gray"/>
         </StackPanel>
+
+        <Button Content="✖" Width="20" Height="20" 
+                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Click="CloseButton_Click" 
+                Style="{StaticResource FlatButtonStyle}"/>
     </Border>
 </Window>
