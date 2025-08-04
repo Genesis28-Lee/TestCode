@@ -13,13 +13,7 @@ public partial class App : Application
         base.OnStartup(e);
         ApplyTheme();
 
-        SystemEvents.UserPreferenceChanged += (_, args) =>
-        {
-            if (args.Category == UserPreferenceCategory.General)
-            {
-                ApplyTheme();
-            }
-        };
+        SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
 
         ToastNotificationManagerCompat.OnActivated += toastArgs =>
         {
@@ -30,14 +24,22 @@ public partial class App : Application
         ToastNotificationManagerCompat.History.Clear();
     }
 
+    private void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
+    {
+        if (e.Category == UserPreferenceCategory.General)
+        {
+            ApplyTheme();
+        }
+    }
+
     private void ApplyTheme()
     {
-        string themeFile = ThemeHelper.IsLightTheme()
-            ? "Themes/Light.xaml"
-            : "Themes/Dark.xaml";
+        var themeUri = ThemeHelper.IsLightTheme()
+            ? new Uri("Themes/Light.xaml", UriKind.Relative)
+            : new Uri("Themes/Dark.xaml", UriKind.Relative);
 
-        var rd = new ResourceDictionary { Source = new Uri(themeFile, UriKind.Relative) };
-        Resources.MergedDictionaries.Clear();
-        Resources.MergedDictionaries.Add(rd);
+        var mergedDictionaries = Resources.MergedDictionaries;
+        mergedDictionaries.Clear();
+        mergedDictionaries.Add(new ResourceDictionary { Source = themeUri });
     }
 }
