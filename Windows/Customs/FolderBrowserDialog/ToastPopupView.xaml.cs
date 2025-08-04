@@ -10,11 +10,22 @@ public partial class ToastPopupView : Window
         Top = screen.Bottom - Height - 100;
     }
 
+    private void CloseButton_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
     private async void Window_Loaded(object sender, RoutedEventArgs e)
     {
-        var anim = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));
-        BeginAnimation(OpacityProperty, anim);
-
+        var slideIn = new ThicknessAnimation
+        {
+            From = new Thickness(0, 100, 0, -100),
+            To = new Thickness(0),
+            Duration = TimeSpan.FromMilliseconds(400),
+            EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+        };
+        BeginAnimation(MarginProperty, slideIn);
+    
         await Task.Delay(4000);
         Close();
     }
