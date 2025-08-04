@@ -10,6 +10,9 @@ public class NotificationMessage : INotifyPropertyChanged
     public NotificationPriority Priority { get; set; } = NotificationPriority.Normal;
     public int Count { get; private set; } = 1;
     public DateTime Timestamp { get; set; } = DateTime.Now;
+    public string? Tag { get; set; } // 예: 폴더 경로
+
+    public string DisplayMessage => Count > 1 ? $"{Message} ({Count}회)" : Message;
 
     public void IncrementCount()
     {
@@ -17,8 +20,6 @@ public class NotificationMessage : INotifyPropertyChanged
         OnPropertyChanged(nameof(Count));
         OnPropertyChanged(nameof(DisplayMessage));
     }
-
-    public string DisplayMessage => Count > 1 ? $"{Message} ({Count}회)" : Message;
 
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged(string prop) =>
