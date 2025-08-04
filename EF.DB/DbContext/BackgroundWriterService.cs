@@ -11,20 +11,20 @@ public class BackgroundWriterService : IDisposable
     private abstract class WriteJobBase
     {
         public int RetryCount { get; set; } = 0;
-        public abstract Task ExecuteAsync(dRAST3Context context);
+        public abstract Task ExecuteAsync(DbContext context);
     }
 
     private class WriteJob : WriteJobBase
     {
-        public Func<dRAST3Context, Task> Action { get; }
+        public Func<DbContext, Task> Action { get; }
         public TaskCompletionSource<bool> Tcs { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-        public WriteJob(Func<dRAST3Context, Task> action)
+        public WriteJob(Func<DbContext, Task> action)
         {
             Action = action;
         }
 
-        public override async Task ExecuteAsync(dRAST3Context context)
+        public override async Task ExecuteAsync(DbContext context)
         {
             await Action(context);
             Tcs.SetResult(true);
@@ -33,15 +33,15 @@ public class BackgroundWriterService : IDisposable
 
     private class WriteJob<T> : WriteJobBase
     {
-        public Func<dRAST3Context, Task<T>> Action { get; }
+        public Func<DbContext, Task<T>> Action { get; }
         public TaskCompletionSource<T> Tcs { get; } = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-        public WriteJob(Func<dRAST3Context, Task<T>> action)
+        public WriteJob(Func<DbContext, Task<T>> action)
         {
             Action = action;
         }
 
-        public override async Task ExecuteAsync(dRAST3Context context)
+        public override async Task ExecuteAsync(DbContext context)
         {
             var result = await Action(context);
             Tcs.SetResult(result);
@@ -50,23 +50,23 @@ public class BackgroundWriterService : IDisposable
 
     private readonly BlockingCollection<WriteJobBase> _queue = new();
     private readonly CancellationTokenSource _cts = new();
-    private readonly Func<dRAST3Context> _contextFactory;
+    private readonly Func<DbContext> _contextFactory;
     private readonly Task _worker;
 
-    public BackgroundWriterService(Func<dRAST3Context> contextFactory)
+    public BackgroundWriterService(Func<DbContext> contextFactory)
     {
         _contextFactory = contextFactory;
         _worker = Task.Run(ConsumeQueueAsync);
     }
 
-    public Task EnqueueWriteAsync(Func<dRAST3Context, Task> action)
+    public Task EnqueueWriteAsync(Func<DbContext, Task> action)
     {
         var job = new WriteJob(action);
         _queue.Add(job);
         return job.Tcs.Task;
     }
 
-    public Task<T> EnqueueWriteAsync<T>(Func<dRAST3Context, Task<T>> action)
+    public Task<T> EnqueueWriteAsync<T>(Func<DbContext, Task<T>> action)
     {
         var job = new WriteJob<T>(action);
         _queue.Add(job);
