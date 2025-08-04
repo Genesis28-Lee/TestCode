@@ -5,6 +5,7 @@ public class NotificationService
 {
     public ObservableCollection<NotificationMessage> Messages { get; } = new();
 
+    /*
     public void Notify(string message, NotificationPriority priority = NotificationPriority.Normal, string? tag = null)
     {
         Application.Current.Dispatcher.Invoke(() =>
@@ -28,6 +29,30 @@ public class NotificationService
                 ScheduleRemoval(msg);
             }
 
+            SendWindowsToast(message, priority);
+        });
+    }
+    */
+    public void Notify(string message, NotificationType type = NotificationType.Info, string? tag = null)
+    {
+        var priority = type == NotificationType.Error || type == NotificationType.Warning
+            ? NotificationPriority.High
+            : NotificationPriority.Normal;
+    
+        Application.Current.Dispatcher.Invoke(() =>
+        {
+            var msg = new NotificationMessage
+            {
+                Message = message,
+                Type = type,
+                Timestamp = DateTime.Now,
+                Priority = priority,
+                Tag = tag
+            };
+    
+            Messages.Insert(0, msg);
+            ShowToastPopup(msg);
+            ScheduleRemoval(msg);
             SendWindowsToast(message, priority);
         });
     }
