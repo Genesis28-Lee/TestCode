@@ -8,5 +8,7 @@
                 <!-- <ResourceDictionary Source="Themes/Light.xaml" /> -->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
+        <local:PriorityToBrushConverter x:Key="PriorityToBrushConverter"/>
     </Application.Resources>
 </Application>
