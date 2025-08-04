@@ -1,0 +1,6 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <Color x:Key="WindowBackgroundColor">#FFFFFFFF</Color>
+    <Color x:Key="TextColor">#FF000000</Color>
+    <SolidColorBrush x:Key="WindowBackgroundBrush" Color="{StaticResource WindowBackgroundColor}" />
+    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextColor}" />
+</ResourceDictionary>
