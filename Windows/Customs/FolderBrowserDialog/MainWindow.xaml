@@ -4,5 +4,8 @@
         Title="Folder Browser" Width="800" Height="500">
     <Grid x:Name="MainGrid" Background="{DynamicResource WindowBackgroundBrush}">
         <!-- 다이얼로그를 여기로 로드 -->
+
+        <!-- 기타 UI -->
+        <views:NotificationPanel DataContext="{Binding Notifier}" VerticalAlignment="Bottom" Margin="10"/>
     </Grid>
 </Window>
