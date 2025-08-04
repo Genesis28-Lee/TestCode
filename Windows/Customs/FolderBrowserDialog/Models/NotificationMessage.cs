@@ -4,10 +4,19 @@ public enum NotificationPriority
     High
 }
 
+public enum NotificationType
+{
+    Info,
+    Success,
+    Warning,
+    Error
+}
+
 public class NotificationMessage : INotifyPropertyChanged
 {
     public string Message { get; set; } = string.Empty;
     public NotificationPriority Priority { get; set; } = NotificationPriority.Normal;
+    public NotificationType Type { get; set; } = NotificationType.Info;
     public int Count { get; private set; } = 1;
     public DateTime Timestamp { get; set; } = DateTime.Now;
     public string? Tag { get; set; } // 예: 폴더 경로
