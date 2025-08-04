@@ -5,47 +5,55 @@ public class NotificationService
 {
     public ObservableCollection<NotificationMessage> Messages { get; } = new();
 
-    public void Notify(string message, NotificationPriority priority = NotificationPriority.Normal)
+    public void Notify(string message, NotificationPriority priority = NotificationPriority.Normal, string? tag = null)
     {
         Application.Current.Dispatcher.Invoke(() =>
         {
-            // 중복 메시지 처리
-            var existing = Messages.FirstOrDefault(m => m.Message == message && m.Priority == priority);
+            var existing = Messages.FirstOrDefault(m => m.Message == message && m.Tag == tag);
             if (existing != null)
             {
                 existing.IncrementCount();
             }
             else
             {
-                Messages.Insert(0, new NotificationMessage
+                var msg = new NotificationMessage
                 {
                     Message = message,
                     Priority = priority,
-                    Timestamp = DateTime.Now
-                });
+                    Timestamp = DateTime.Now,
+                    Tag = tag
+                };
+                Messages.Insert(0, msg);
+                ShowToastPopup(msg);
+                ScheduleRemoval(msg);
             }
 
-            // Windows Toast 발송
             SendWindowsToast(message, priority);
         });
     }
 
+    private void ScheduleRemoval(NotificationMessage message)
+    {
+        Task.Delay(TimeSpan.FromSeconds(10)).ContinueWith(_ =>
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                Messages.Remove(message);
+            });
+        });
+    }
+
+    private void ShowToastPopup(NotificationMessage message)
+    {
+        var toast = new ToastPopupView(message);
+        toast.Show();
+    }
+
     private void SendWindowsToast(string message, NotificationPriority priority)
     {
-        var builder = new ToastContentBuilder()
+        new ToastContentBuilder()
             .AddText(priority == NotificationPriority.High ? "⚠️ 중요 알림" : "📁 알림")
-            .AddText(message);
-
-        if (priority == NotificationPriority.High)
-        {
-            builder.SetToastDuration(ToastDuration.Long);
-        }
-
-        builder.Show(toast =>
-        {
-            toast.Group = "MyAppGroup";
-            toast.Tag = Guid.NewGuid().ToString(); // 각 Toast 개별 발송
-            toast.ExpirationTime = DateTimeOffset.Now.AddSeconds(priority == NotificationPriority.High ? 15 : 5);
-        });
+            .AddText(message)
+            .Show();
     }
 }
