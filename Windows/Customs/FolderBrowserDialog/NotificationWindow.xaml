@@ -1,0 +1,17 @@
+<Window x:Class="MyApp.Views.NotificationWindow"
+        Title="알림 기록" Width="400" Height="600">
+    <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding Messages}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="1" BorderBrush="Gray" Margin="2" Padding="5">
+                        <StackPanel>
+                            <TextBlock Text="{Binding DisplayMessage}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Timestamp}" FontSize="10" Foreground="Gray"/>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</Window>
