@@ -8,9 +8,9 @@ public static class ThemeHelper
 {
     public static bool IsLightTheme()
     {
-        const string registryKey = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-        using var key = Registry.CurrentUser.OpenSubKey(registryKey);
-        var value = key?.GetValue("AppsUseLightTheme");
-        return value is int intValue && intValue > 0;
+        const string key = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+        using var regKey = Registry.CurrentUser.OpenSubKey(key);
+        var value = regKey?.GetValue("AppsUseLightTheme");
+        return value is int v && v == 1;
     }
 }
