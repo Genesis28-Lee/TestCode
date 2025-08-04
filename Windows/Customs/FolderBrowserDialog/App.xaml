@@ -9,6 +9,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
-        <local:PriorityToBrushConverter x:Key="PriorityToBrushConverter"/>
+        <local:TypeToBrushConverter x:Key="TypeToBrushConverter"/>
     </Application.Resources>
 </Application>
